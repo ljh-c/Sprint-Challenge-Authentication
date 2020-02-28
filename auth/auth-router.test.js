@@ -10,6 +10,10 @@ describe('auth router', () => {
 
   beforeEach(async () => {
     await db('users').truncate();
+    await request(server).post('/api/auth/register').send({
+      username: 'wine',
+      password: 'french'
+    });
   });
 
   describe('POST /api/auth/register', () => {
@@ -36,11 +40,28 @@ describe('auth router', () => {
 
       expect(typeof res.body.token === 'string').toBe(true);
     });
+  });
 
-    // const res = await request(server).post('/api/auth/register').send({
-    //   username: 'cheese',
-    //   password: 'french'
-    // });
+  describe('POST /api/auth/login', () => {
+    it('should return 200 OK status', async () => {
+      const expectedStatus = 200;
+      
+      const res = await request(server).post('/api/auth/login').send({
+        username: 'wine',
+        password: 'french'
+      });
+      // console.log('**** LOOK HERE ****', res.body);
+      expect(res.status).toEqual(expectedStatus);
+    });
+
+    it('it should return a token', async () => {
+      const res = await request(server).post('/api/auth/login').send({
+        username: 'wine',
+        password: 'french'
+      });
+
+      expect(typeof res.body.token === 'string').toBe(true);
+    });
   });
 
   afterAll(async () => {
