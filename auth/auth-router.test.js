@@ -34,10 +34,6 @@ describe('auth router', () => {
         password: 'french'
       });
 
-      // const res = await request(server).get('/api/jokes').set(
-      //   'Authorization', `${token}`
-      // );
-
       expect(typeof res.body.token === 'string').toBe(true);
     });
   });
